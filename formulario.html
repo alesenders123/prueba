@@ -1,0 +1,69 @@
+{% load static %}
+
+<div class="w-full max-w-5xl mx-auto">
+    <!-- La lógica de selección de sector debe manejarse en el backend o usando JS adicional -->
+    {% if selected_sector %}
+        <!-- Componente FormularioSector -->
+        <div class="mx-auto max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <button type="button" onclick="window.history.back();" class="p-0">
+                        <!-- Icono de vuelta -->
+                        <img src="{% static 'path/to/arrow_left_icon.svg' %}" alt="Volver" class="h-6 w-6 mr-2">
+                        Volver
+                    </button>
+                    <h2 class="text-2xl font-semibold text-center">{{ selected_sector }}</h2>
+                </div>
+                <form action="{% url 'url_to_form_submission' %}" method="post" class="space-y-6">
+                    {% csrf_token %}
+                    <div class="space-y-2">
+                        <label for="material">Material</label>
+                        <input type="text" id="material" name="material" placeholder="Ingrese el material">
+                    </div>
+                    <div class="space-y-2">
+                        <label for="cantidad">Cantidad usada</label>
+                        <input type="number" id="cantidad" name="cantidad" placeholder="Ingrese la cantidad">
+                    </div>
+                    <div class="space-y-2">
+                        <label for="unidad">Unidad de medida</label>
+                        <select id="unidad" name="unidad">
+                            <option value="kg">Kilogramos (kg)</option>
+                            <option value="g">Gramos (g)</option>
+                            <option value="l">Litros (l)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                            <option value="m">Metros (m)</option>
+                            <option value="cm">Centímetros (cm)</option>
+                            <option value="unidad">Unidad</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full">Guardar</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <!-- Componente SeleccionSector -->
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
+            <div class="p-12">
+                <h2 class="text-2xl font-semibold text-center mb-8">¿A qué sector pertenece?</h2>
+                <div class="flex flex-col items-center space-y-6">
+                    <div class="grid grid-cols-3 gap-6 w-full">
+                        <!-- Botones de sector, deben estar definidos en el contexto o generados dinámicamente -->
+                        {% for sector in sectores %}
+                            <button class="h-48 text-xl font-semibold flex flex-col items-center justify-center gap-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="selectSector('{{ sector.name }}')">
+                                <!-- Icono del sector -->
+                                <img src="{% static 'path/to/icon_'|add:sector.icon_name|add:'.svg' %}" class="h-12 w-12">
+                                {{ sector.name }}
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+function selectSector(sectorName) {
+    // Lógica para manejar la selección del sector (puede involucrar llamadas AJAX o redireccionamientos)
+}
+</script>
